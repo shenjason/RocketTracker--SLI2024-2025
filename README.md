@@ -1,4 +1,4 @@
-# RocketTracker
+# TeleMeSomeMoreData
 
 ![PlatformIO](https://img.shields.io/badge/PlatformIO-embedded-orange?style=flat&logo=platformio)
 ![Board](https://img.shields.io/badge/Board-Teensy%204.1-blue?style=flat)
@@ -7,11 +7,18 @@
 ![License](https://img.shields.io/badge/license-GPL--3.0-green?style=flat)
 
 
-## About
+### Flight and Ground station software for the **AIAA OC Section** entry in [NASA SLI](https://www.nasa.gov/learning-resources/nasa-student-launch/) 2024-2025 competition.
 
-Flight software and ground station software for the **AIAA Orange County Section** entry in the [NASA Student Launch Initiative (SLI)](https://www.nasa.gov/learning-resources/nasa-student-launch/) 2024-2025 competition.
+**"TeleMeSomeMoreData"**, is the payload for the 2024-2025 season, the software include three parts: 
+Flight software, Ground station control software, and the [Ground Station Display software](https://github.com/shenjason/GroundStationDisplay--SLI2024-2025/). The flight software continuously transmits 82-byte binary telemetry packets from the rocket over LoRa radio at 446.5 MHz. On the ground, the ground station control software decodes incoming packets, computes azimuth and altitude angles via the Haversine formula, and drives a dual-axis stepper gimbal to autonomously point a directional Yagi antenna at the rocket in flight. Live telemetry is streamed over serial to the Ground Station Display Software running on a laptop. 
 
-The rocket's payload, **"TeleMeSomeMoreData,"** continuously transmits 82-byte binary telemetry packets from the rocket over LoRa radio at 446.5 MHz. On the ground, a Teensy 4.1 decodes incoming packets, computes azimuth and altitude angles via the Haversine formula, and drives a dual-axis stepper gimbal to autonomously point a directional Yagi antenna at the rocket in flight. Live telemetry is streamed over serial to a  [display software](https://github.com/shenjason/GroundStationDisplay--SLI2024-2025/) running on a laptop.
+
+### Team
+
+- **Mentors:** Binay Pandey, Janet Koepke, Robert Koepke
+- **Payload Software Lead:** Jason Shen (Owner of repository)
+- **Project Manager:** Bingxuan Cheng
+- **Avionics Lead:** William Yuan
 
 | | |
 |---|---|
@@ -21,7 +28,7 @@ The rocket's payload, **"TeleMeSomeMoreData,"** continuously transmits 82-byte b
 
 ## 2023-2024 Season (Year 1)
 
-The first year established the core telemetry pipeline: a Teensy 4.1 flight computer collecting IMU, barometric, GPS, and temperature data, packing it into a binary LoRa packet, and logging it to SD card. A basic receive-only ground station decoded the packets and printed labeled fields to serial. Manual antenna pointing was required.
+The first year established the core telemetry pipeline: a Teensy 4.1 flight computer collecting IMU, barometric, GPS, and temperature data, packing it into a binary LoRa packet, and logging it to SD card. A basic receive-only ground station decoded the packets and printed labeled fields to a simple ground station interface. Manual antenna pointing was required.
 
 | | |
 |---|---|
@@ -34,9 +41,9 @@ The first year established the core telemetry pipeline: a Teensy 4.1 flight comp
 Building on year one, this year added:
 
 - **Autonomous alt-azimuth antenna tracking** — dual-axis stepper gimbal that locks onto and follows the rocket in real time using GPS telemetry from each received packet
-- **Unity ground station display** — full 3D flight visualization with live gauges for acceleration, velocity, altitude, GPS position, temperature, pressure, humidity, eCO2, and TVOC
+- **Improved Unity ground station display** — full 3D flight visualization with live gauges for acceleration, velocity, altitude, GPS position, temperature, pressure, humidity, eCO2, and TVOC
 - **More sensors for more data** — air quality sensors (SGP30: TVOC, eCO2) added to subscale firmware; GPS multi-constellation support (GLONASS, Galileo, BeiDou)
-- **GPS self-calibration** — ground station acquires its own fix at startup and uses it as the reference coordinate, eliminating manual coordinate entry
+- **GPS self-calibration** — ground station now has it's own gps and can acquire its own fix at startup and use it as the reference coordinate, eliminating manual coordinate entry
 
 | | |
 |---|---|
@@ -68,7 +75,7 @@ Each subdirectory is an independent [PlatformIO](https://platformio.org/) projec
 
 ---
 
-## Payload Flight Software (`fullscale_flight`)
+## Flight Software (`fullscale_flight`)
 
 The flight firmware runs on a **Teensy 4.1** inside the rocket. On every loop it polls all sensors, builds a fixed 82-byte binary packet, writes it to the onboard SD card, and transmits it over LoRa radio.
 
@@ -130,7 +137,7 @@ Packets are serialized into a flat binary buffer via a `union Convert` that rein
 
 ---
 
-## Ground Station Firmware (`fullscale_groundstation`)
+## Ground Station Control Software (`fullscale_groundstation`)
 
 Receives LoRa packets, decodes telemetry, drives a dual-axis stepper gimbal to track the rocket, and streams labeled data over serial to the display laptop.
 
@@ -166,6 +173,8 @@ pn<N>,et<s>,gw<°>,gx<°>,gy<°>,gz<°>,mx<µT>,...,la<°>,lo<°>,ga<m>,sn<count
 
 ### Manual Override
 
+Maunal Override allows for user control over the alti-azimuth tracking system.
+
 | Key | Action |
 |-----|--------|
 | `1` | Enable autonomous tracking |
@@ -184,19 +193,6 @@ Built in the **Unity game engine**, the display application reads the labeled se
 <p align="center">
   <img src="docs/images/GroundDisplayInterface.JPG" width="720" alt="Ground Station Display Software"/>
 </p>
-
----
-
-## Team
-
-AIAA OC Section SLI Team 2024-2025 — Irvine, CA
-
-![Team at NASA SLI](docs/images/IMG_9484.JPG)
-
-- **Mentors:** Binay Pandey, Janet Koepke, Robert Koepke
-- **Project Manager:** Bingxuan Cheng
-- **Avionics Lead:** William Yuan
-- **Payload Software Lead:** Jason Shen
 
 ---
 
