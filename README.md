@@ -1,4 +1,4 @@
-# AIAA OC Section — NASA Student Launch 2024-2025
+# RocketTracker
 
 ![PlatformIO](https://img.shields.io/badge/PlatformIO-embedded-orange?style=flat&logo=platformio)
 ![Board](https://img.shields.io/badge/Board-Teensy%204.1-blue?style=flat)
@@ -6,17 +6,12 @@
 ![Unity](https://img.shields.io/badge/Display-Unity%20Engine-black?style=flat&logo=unity)
 ![License](https://img.shields.io/badge/license-GPL--3.0-green?style=flat)
 
-## Key Software Skills
-
-> **Embedded C++ · Real-Time Sensor Fusion · Custom Binary Protocol Design · LoRa Wireless Telemetry · Haversine Navigation Algorithm · Closed-Loop Stepper Motor Control · Unity 3D Data Visualization · Multi-Project PlatformIO Build System · SD Card Data Logging · GPS Multi-Constellation Parsing**
-
----
 
 ## About
 
-Flight software and ground station firmware for the **AIAA Orange County Section** entry in the [NASA Student Launch Initiative (SLI)](https://www.nasa.gov/learning-resources/nasa-student-launch/) 2024-2025 competition.
+Flight software and ground station software for the **AIAA Orange County Section** entry in the [NASA Student Launch Initiative (SLI)](https://www.nasa.gov/learning-resources/nasa-student-launch/) 2024-2025 competition.
 
-The payload, **"TeleMeSomeMoreData,"** continuously transmits 82-byte binary telemetry packets from the rocket over LoRa radio at 446.5 MHz. On the ground, a Teensy 4.1 decodes incoming packets, computes azimuth and altitude angles via the Haversine formula, and drives a dual-axis stepper gimbal to autonomously point a directional Yagi antenna at the rocket in flight. Live telemetry is streamed over serial to a Unity-based display application running on a laptop.
+The rocket's payload, **"TeleMeSomeMoreData,"** continuously transmits 82-byte binary telemetry packets from the rocket over LoRa radio at 446.5 MHz. On the ground, a Teensy 4.1 decodes incoming packets, computes azimuth and altitude angles via the Haversine formula, and drives a dual-axis stepper gimbal to autonomously point a directional Yagi antenna at the rocket in flight. Live telemetry is streamed over serial to a  [display software](https://github.com/shenjason/GroundStationDisplay--SLI2024-2025/) running on a laptop.
 
 | | |
 |---|---|
@@ -36,12 +31,12 @@ The first year established the core telemetry pipeline: a Teensy 4.1 flight comp
 
 ## 2024-2025 Season (Year 2) — What We Added
 
-Building on year one, this season added:
+Building on year one, this year added:
 
 - **Autonomous alt-azimuth antenna tracking** — dual-axis stepper gimbal that locks onto and follows the rocket in real time using GPS telemetry from each received packet
 - **Unity ground station display** — full 3D flight visualization with live gauges for acceleration, velocity, altitude, GPS position, temperature, pressure, humidity, eCO2, and TVOC
-- **Expanded sensor suite** — air quality sensors (SGP30: TVOC, eCO2) added to subscale firmware; GPS multi-constellation support (GLONASS, Galileo, BeiDou)
-- **GPS self-calibration** — ground station acquires its own fix at startup and uses it as the reference coordinate, eliminating manual position entry
+- **More sensors for more data** — air quality sensors (SGP30: TVOC, eCO2) added to subscale firmware; GPS multi-constellation support (GLONASS, Galileo, BeiDou)
+- **GPS self-calibration** — ground station acquires its own fix at startup and uses it as the reference coordinate, eliminating manual coordinate entry
 
 | | |
 |---|---|
@@ -189,31 +184,6 @@ Built in the **Unity game engine**, the display application reads the labeled se
 <p align="center">
   <img src="docs/images/GroundDisplayInterface.JPG" width="720" alt="Ground Station Display Software"/>
 </p>
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- [PlatformIO CLI](https://docs.platformio.org/en/latest/core/installation.html) or [PlatformIO IDE](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) (VS Code extension)
-- USB cable for Teensy 4.1
-
-### Build & Upload
-
-```bash
-git clone https://github.com/shenjason/AIAA_SLI2024-2025.git
-cd AIAA_SLI2024-2025
-
-cd fullscale_flight       # or fullscale_groundstation, subscale_v1, subscale_v2
-pio run                   # build
-pio run --target upload   # upload to Teensy
-pio device monitor --baud 9600
-```
-
-### Custom Libraries
-
-`AccelStepperWithDistance` is not in the PlatformIO registry. Clone it into `fullscale_groundstation/lib/AccelStepperWithDistance/`.
 
 ---
 
