@@ -10,7 +10,13 @@
 ### Flight and Ground station software for the **AIAA OC Section** entry in [NASA SLI](https://www.nasa.gov/learning-resources/nasa-student-launch/) 2024-2025 competition.
 
 **"TeleMeSomeMoreData"**, is the payload for the 2024-2025 season, the software include three parts: 
-Flight software, Ground station control software, and the [Ground Station Display software](https://github.com/shenjason/GroundStationDisplay--SLI2024-2025/). The flight software continuously transmits 82-byte binary telemetry packets from the rocket over LoRa radio at 446.5 MHz. On the ground, the ground station control software decodes incoming packets, computes azimuth and altitude angles via the Haversine formula, and drives a dual-axis stepper gimbal to autonomously point a directional Yagi antenna at the rocket in flight. Live telemetry is streamed over serial to the Ground Station Display Software running on a laptop. A separate 1.2 GHz analog video link transmits live video from the payload to the ground station independently of the telemetry system.
+Flight software, Ground station control software, and the [Ground Station Display software](https://github.com/shenjason/GroundStationDisplay--SLI2024-2025/). 
+
+
+**The goal of the software is to acheive an autonomous antenna tracking system, that can transmitt live sensor data down to a ground station that could decode flight data, track the rocket in real time, and display it all through a live 3D ground station interface.**
+
+
+The flight software continuously transmits 82-byte binary telemetry packets from the rocket over LoRa radio at 446.5 MHz. On the ground, the ground station control software decodes incoming packets, computes azimuth and altitude angles via the Haversine formula, and drives a dual-axis stepper gimbal to autonomously point a directional Yagi antenna at the rocket in flight. Live telemetry is streamed over serial to the Ground Station Display Software running on a laptop. A separate 1.2 GHz analog video link transmits live video from the payload to the ground station independently of the telemetry system.
 
 
 ### Team
